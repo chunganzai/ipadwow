@@ -15,6 +15,17 @@
 
 ---
 
+## 實機畫面
+
+<p>
+  <img src="photos/login-screen.jpg" width="49%" alt="iPad mini 8 上的 WoW 永恆登入畫面">
+  <img src="photos/in-game-gadgetzan.jpg" width="49%" alt="遊戲中：塔納利斯．加基森（角色名和聊天已打碼）">
+</p>
+
+左：登入畫面。右：遊戲中（塔納利斯．加基森），角色名和聊天框已打碼。
+
+---
+
 ## 運作方式
 
 | 元件 | 作用 | 來源 |

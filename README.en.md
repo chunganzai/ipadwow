@@ -16,6 +16,17 @@ This repo runs WoW Forever natively on an iPad with the unofficial **WolkaraFore
 
 ---
 
+## Screenshots
+
+<p>
+  <img src="photos/login-screen.jpg" width="49%" alt="WoW Forever login screen on iPad mini 8">
+  <img src="photos/in-game-gadgetzan.jpg" width="49%" alt="In game: Gadgetzan, Tanaris (character name and chat redacted)">
+</p>
+
+Left: the login screen. Right: in game at Gadgetzan, Tanaris. The character name and chat are redacted.
+
+---
+
 ## How it works
 
 | Component | Role | Source |
