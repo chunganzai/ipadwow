@@ -13,8 +13,26 @@
 - ✅ 簽名內含 `com.apple.developer.kernel.increased-memory-limit = true` 和 `get-task-allow = true`
 - ✅ 從 StikDebug 啟動，JIT 成功。log 顯示 `arena was reserved at launch`，大小 1 GiB
 - ✅ 設定：Game Edition = Forever（`wowf`）、Region = **Taiwan（`tw`）**、Language = English（enUS）
-- ⏳ 遊戲下載中，總量約 **50.7GB**，比原估 70GB 小
-- ⏳ 待做：按 Play 後讀 `external-jit-diagnostics.log` 的 `budget=`，6GB 以上才算記憶體權限生效；之後登入 Battle.net
+- ✅ 遊戲下載完成（16:18，iPad 上約 49GB，檢查 `error=none`）
+- ✅ 按 Play 後遊戲能啟動到登入畫面；可用記憶體約 **11.7GB**（遊戲顯示 11.5 GB System Memory），記憶體權限有生效
+- ⏳ Battle.net 登入：已改用含根憑證的 IPA、並把 portal 改成 `"KR"`，等待測試結果
+
+### 下載完成後到登入（19:30–19:56）
+- **第一次 Play 失敗的原因：** 當時的 Tolkara 是從主畫面直接開的，log 裡沒有 `arena was reserved at launch`，等於沒有 JIT
+  - 一定要走 LocalDevVPN → StikDebug → Enable JIT → 點 Tolkara；LocalDevVPN 要保持連線
+  - 從 StikDebug 開之後 JIT 正常，遊戲進到登入畫面
+- **記憶體：** `external-jit-diagnostics.log` 這版沒有 `budget=` 行，改看 `memory checkpoint … available=11779356088`（約 11.7GB）和遊戲 `Logs/gx.log` 的 `11.5 GB System Memory`
+- **登入錯誤 BLZ51901016**（`ERROR_NETWORK_MODULE_SOCKET_CLOSED (1016)`）：連上 `TW.actual.battle.net:1119` 後約 0.6 秒被斷線
+  - 原因一（推測）：官方 workflow 用 `TOLKARA_SYSTEM_ROOTS=NO` 編，IPA 不含根憑證；上游 `docs/IPHONE.md` 寫 Forever 要用含根憑證的版本才能登入
+    - 修法：fork 的 `wolkaraforever/tools/package_ipa.sh` 加 `export TOLKARA_SYSTEM_ROOTS=YES`，標籤 **`v1.0.17-roots`**，雲端編譯一次成功
+    - 產物 `ipa/WolkaraForever-v1.0.17-roots-unsigned.ipa`（10,013,075 bytes，內含 `CompatibilityRootCertificates.plist`）
+    - 下載後**立刻刪除 GitHub release**，因為這版含 runner 的公開根憑證，不適合公開散布（標籤留著）
+    - 用 iloader「匯入 IPA」覆蓋安裝：同 bundle ID，**49GB 遊戲檔保留**，`increased-memory-limit` 仍在
+    - 只換這個之後，同樣出現 1016 → 不是唯一原因
+  - 原因二：portal 設錯。iPad 的 `_forever_/WTF/Config.wtf` 是 `SET portal "TW"`，但電腦上（Lutris）能登入的 Forever 是 **`SET portal "KR"`**（台灣帳號走 KR 登入伺服器）
+    - 修法：Tolkara 完全關閉後，用 ifuse 把那一行改成 `"KR"`，其他設定不動；原檔備份在 scratchpad
+    - 上游文件說 beta 用 `portal "test"`，但以本帳號實際可用的值為準
+- 下載語言只有 enUS，所以 iPad 維持 `textLocale/audioLocale "enUS"`（電腦上是 zhTW）
 
 ### 安裝方式（和原規劃不同）
 - **SideStore 在 iPad 上無法登入 → 已刪除，改用電腦上的 iloader 安裝全部 App**
