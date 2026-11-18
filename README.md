@@ -6,7 +6,8 @@
 - 實測機：iPad mini 8（A20 Pro、約 12GB RAM、256GB、iPadOS 27.0）
 - 狀態（2026-11-18）：✅ 安裝 ✅ JIT ✅ 遊戲下載 ✅ Battle.net 登入、進到角色列表 ✅ 繁中介面
 - 詳細過程和除錯紀錄：[CHANGELOG.md](CHANGELOG.md)
-- 文中 `<TEAM_ID>`、`<GITHUB_USER>` 等代號的實際值記在本機的 `PRIVATE.local.md`（不上 git）
+- 文中 `<TEAM_ID>`、`<GITHUB_USER>`、`<IPAD_APPLE_ID>` 等是代號，請換成你自己的值（作者的實際值只存在本機，不在 repo 裡）
+- 這是個人實作紀錄，不是 WolkaraForever 官方文件；本 repo 不提供任何 IPA
 
 > ⚠️ 封號風險：Tolkara 官方說「使用線上帳號時，被停權或封號的風險是真實的，而且完全由你承擔」。Blizzard 不支援這個專案。不要搭配任何外掛或自動化工具。
 
@@ -171,7 +172,7 @@ Tolkara 的重要檔案（在它的 Documents 裡）：
 | [IPAD-FREE-ROUTE.md](IPAD-FREE-ROUTE.md) | 免費路線的原始規劃（2026-11-17） |
 | [RESEARCH.md](RESEARCH.md) | 最初的研究紀錄（「需要 Mac」的結論已過時） |
 | [INSTALL-MAC.md](INSTALL-MAC.md)、[APPLE-DEVELOPER-ENROLL.md](APPLE-DEVELOPER-ENROLL.md) | 付費帳號和 Mac 路線（備案） |
-| `reference/` | 上游文件備份、Blizzard CDN 和版本資料 |
+| `reference/` | 上游文件備份（MIT，見 `reference/upstream/NOTICE.md`）、Blizzard CDN 和版本資料 |
 
 ## 來源
 
