@@ -2,3 +2,4 @@ ipa/
 *.ipa
 PRIVATE.local.md
 *.local.md
+__pycache__/

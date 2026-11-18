@@ -1,0 +1,8 @@
+[Unit]
+Description=iPad sideload re-sign check (ipadwow)
+
+[Service]
+Type=oneshot
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/python3 %h/ipadwow/resign/resign.py
+TimeoutStartSec=20min

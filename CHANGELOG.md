@@ -16,7 +16,16 @@
 - ✅ 遊戲下載完成（16:18，iPad 上約 49GB，檢查 `error=none`）
 - ✅ 按 Play 後遊戲能啟動到登入畫面；可用記憶體約 **11.7GB**（遊戲顯示 11.5 GB System Memory），記憶體權限有生效
 - ✅ **Battle.net 登入成功**（約 20:00）：含根憑證的 IPA + `portal "KR"` + 手動輸入驗證器代碼
-- 🎯 目標達成：iPad 上可以操作登入 Battle.net
+- 🎯 目標達成：iPad 上可以操作登入 Battle.net，已進到角色列表
+- ✅ 自動重簽：見下方「自動重簽工具」
+
+### 自動重簽工具（20:05）
+- 新增 `resign/`：每小時（systemd user timer `ipad-resign.timer`）檢查 iPad 上 App 的簽名到期日
+  - 剩 2 天內且 iPad 有接 → 自動操作 iloader 視窗匯入 IPA 重簽，並確認新到期日
+  - iPad 沒接 → 桌面通知提醒；做不到（螢幕鎖定、iloader 沒登入）也會通知原因
+- 實測 `resign.py --force`：StikDebug、Tolkara 都在 1 分鐘內重簽成功，到期日延到 11/25 20:06；配對檔、49GB 遊戲檔、portal KR、記憶體權限都保留
+- 原本想用 iloader 底層的 `isideload` 寫指令列工具，但安裝 Rust 被自動模式擋下，先用操作視窗的方式
+- 詳見 `resign/README.md`
 
 ### 下載完成後到登入（19:30–19:56）
 - **第一次 Play 失敗的原因：** 當時的 Tolkara 是從主畫面直接開的，log 裡沒有 `arena was reserved at launch`，等於沒有 JIT
