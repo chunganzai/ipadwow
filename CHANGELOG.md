@@ -19,6 +19,15 @@
 - 🎯 目標達成：iPad 上可以操作登入 Battle.net，已進到角色列表
 - ✅ 自動重簽：見下方「自動重簽工具」
 
+### 不透過電腦重簽的可能性（評估，20:10）
+| 方式 | 可行性 | 說明 |
+|------|--------|------|
+| SideStore（iPad 上自己重簽） | ⚠️ 目前不行 | 唯一的「免費帳號 + 不用電腦」正規做法；但 0.7.0 在這台 iPad 登入失敗（-45063 / 401）。可試 iloader 的「SideStore（每夜建置版）」看是否已修好；SideStore 會佔第 3 個 App 名額（剛好 3 個） |
+| LiveContainer | ❌ 不建議 | Tolkara 需要自己的記憶體權限和 JIT，49GB 資料也在自己的容器裡，放進 LiveContainer 不適用；而且 LiveContainer 本身仍要重簽 |
+| 付費 Apple Developer（US$99/年） | ✅ 可行 | 簽一次可用 1 年，但簽名當下仍需電腦（iloader）；見 `APPLE-DEVELOPER-ENROLL.md` |
+| 第三方簽名服務 / 企業憑證 | ❌ 不建議 | 常被撤銷、需交出 Apple ID 或 IPA，也不一定支援 increased-memory-limit |
+- 結論：免費帳號下目前仍需電腦，靠 `resign/` 自動重簽 + 提醒；SideStore 修好後可再試
+
 ### 自動重簽工具（20:05）
 - 新增 `resign/`：每小時（systemd user timer `ipad-resign.timer`）檢查 iPad 上 App 的簽名到期日
   - 剩 2 天內且 iPad 有接 → 自動操作 iloader 視窗匯入 IPA 重簽，並確認新到期日
