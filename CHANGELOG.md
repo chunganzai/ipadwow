@@ -20,6 +20,17 @@
 - ✅ 自動重簽：見下方「自動重簽工具」
 - ✅ **繁中介面**（21:22 確認）：zhTW 語言檔下載完成，介面和語音都是中文
 
+### 測試 SideStore 每夜建置版自動重簽（21:27–21:36，暫停）
+- 用 iloader「SideStore（每夜建置版）」安裝（版本號 0700），沿用舊的 App ID（可用 App ID 還有 6/10）。App 名額 3/3 用滿
+- **進展**：On-device anisette 這次成功（之前是 -45063）；帳密和 Apple ID 兩步驟驗證都通過，有抓到團隊
+  - 第 1 次 -22421：發生在輸入兩步驟驗證碼之後，推測是驗證碼過期或打錯；第 2 次就成功了
+- **卡在憑證**：帳號上只有 1 張 iOS Development 憑證（iloader 的），SideStore 要求撤銷它、換成自己的
+  - 撤銷的話，iloader 簽的 StikDebug、Tolkara 會失效，要改由 SideStore 重裝接管；之後不能再混用 iloader，否則會互相撤銷
+  - 未知：SideStore 簽的 Tolkara 還有沒有 increased-memory-limit
+  - **使用者選擇取消**，憑證和 2 個 App 都沒變（iloader 憑證管理頁確認）
+- 配對檔：SideStore 會自己刪掉舊檔名 `ALTPairingFile.mobiledevicepairing`。從檔案選 `PairingFile_RemoteRP.plist` 匯入時被拒：`The pairing file format is ambiguous`（同時含 RP 和 Lockdown 資料），要另外做只含其中一種的檔案
+- SideStore 目前留在 iPad 上，未登入。要繼續測的話：撤銷憑證 → 在 SideStore 重裝 StikDebug、Tolkara → 檢查記憶體權限；失敗就用 iloader 重簽救回
+
 ### 一鍵啟動捷徑（21:10，待測）
 - 需求：從主畫面點一下就開遊戲，不用每次進 StikDebug
 - 不需要 JIT 的方式不存在；Tolkara 自己開 JIT 的「Developer service」模式要 Network Extension 權限，只有付費帳號能用
