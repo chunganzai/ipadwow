@@ -157,3 +157,29 @@
 ### 文件
 - `IPAD-FREE-ROUTE.md`：免費 Apple ID 路線規劃，開頭加上「實作紀錄」
 - `README.md`、`INSTALL-MAC.md`、`APPLE-DEVELOPER-ENROLL.md`：Mac 加付費帳號路線，目前用不到，當作備案
+
+### PlayPort 與現有方法比較（待測試）
+
+| 項目 | 現有方法（Tolkara） | PlayPort |
+|------|-------------------|---------|
+| 架構 | iOS 原生 WoW port | PC 遊戲模擬層（跑 Windows 版） |
+| WoW 支援 | 專為 WoW Forever 設計 | v0.5 新增，支援 Battle.net |
+| 目標裝置 | iPad mini 8 ✅ | 主要測試 A19 Pro iPhone，iPad 未明確說明 ⚠️ |
+| JIT 啟動 | 每次：LocalDevVPN → StikDebug → Enable JIT → 開遊戲 | iOS 27+ 只需一次性配對，之後直接開 ✅ |
+| 簽名工具 | iloader + resign/ 自動腳本 | AltStore Classic 2.2+（原生支援 increased-memory-limit） |
+| 7天重簽 | resign/ 自動化 | 仍需每週重簽 |
+| 台灣伺服器 | 需要 `portal "KR"` 繞過 | 未知，可能直接用 Battle.net 登入 ⚠️ |
+| 繁中介面 | 需 fork 修改編譯（v1.0.17-zhtw） | 跑 PC 版，語言設定應更自由 ✅ |
+| 遊戲資料 | 49GB 已在裝置上 | 重裝要重下 49GB ❌ |
+| 費用 | 免費 | 免費 |
+
+**測試重點：**
+- iPad mini 8 是否相容（PlayPort 主要測試 A19 Pro iPhone）
+- 台灣帳號能否直接登入（不用 `portal "KR"`）
+- 記憶體權限（increased-memory-limit）是否有效
+
+**測試策略：** 先不刪 Tolkara，確認 PlayPort 在 iPad mini 8 上能正常登入 TW 帳號後再決定是否切換。
+
+### 實機照片（2026-11-19）
+- `photos/login-screen.jpg`：iPad mini 8 上的 WoW Forever 登入畫面
+- `photos/in-game-gadgetzan.jpg`：遊戲中（塔納利斯．加基森），角色名、聊天框、其他玩家名稱已打碼
