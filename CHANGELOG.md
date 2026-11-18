@@ -18,6 +18,24 @@
 - ✅ **Battle.net 登入成功**（約 20:00）：含根憑證的 IPA + `portal "KR"` + 手動輸入驗證器代碼
 - 🎯 目標達成：iPad 上可以操作登入 Battle.net，已進到角色列表
 - ✅ 自動重簽：見下方「自動重簽工具」
+- ⏳ 文字改繁中：已裝含 zhTW 選項的新版，等 iPad 上下載中文語言檔
+
+### 重開遊戲閃退 → 語言被同步成 zhTW（20:11）
+- 現象：從 StikDebug 開、按 Play 後約 5 秒遊戲自己結束（`World of Warcraft Forever has closed`），JIT 和記憶體都正常，沒有當機紀錄
+- 原因：第一次登入後 `Config.wtf` 的 `textLocale`、`audioLocale` 從 `enUS` 被改成 `zhTW`（推測是同步了帳號在電腦版的設定），但 iPad 只下載了 enUS 語言檔
+- 處理：Tolkara 關閉後改回 `enUS`（portal `KR` 不動），原檔備份在 scratchpad
+
+### 文字改繁體中文（20:15–20:18）
+- 需求：文字用繁中、語音維持英文
+- WolkaraForever 下載和遊戲本身支援 zhTW，但 UI 選單和 `wolkaraforever-config.json` 的驗證只允許 enUS/frFR/esES/deDE
+- fork 修改（標籤 **`v1.0.17-zhtw`**，基於 `v1.0.17-roots`，同樣含根憑證）：
+  - `WoW/WoWViewController.m`：選單、預設語言、語言名稱清單加入 `zhTW`
+  - `Shell/WolkaraForeverConfig.m`：`WoWLocale` 允許 `zhTW`
+  - `Shell/{en,fr,de}.lproj/Localizable.strings`：加 `locale.zhTW`
+- 雲端編譯一次成功 → `ipa/WolkaraForever-v1.0.17-zhtw-unsigned.ipa`（10,013,229 bytes）；GitHub release 下載後已刪除
+- 用 `resign/` 的 iloader 自動化覆蓋安裝，49GB 遊戲檔、portal KR 保留，到期 11/25 20:18
+- `resign/apps.conf` 改用 zhtw 版 IPA
+- ⏳ 待做：iPad 上 Tolkara 下載語言選 Traditional Chinese 並下載（會連中文語音一起下載）→ 關閉後把 `audioLocale` 改回 `enUS`、`textLocale` 維持 `zhTW`
 
 ### 不透過電腦重簽的可能性（評估，20:10）
 | 方式 | 可行性 | 說明 |
