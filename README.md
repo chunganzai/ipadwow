@@ -4,7 +4,7 @@
 **不需要 Mac，也不需要付費 Apple Developer 帳號**：用 Linux 電腦、免費 Apple ID，加上 GitHub 雲端編譯就能完成。
 
 - 實測機：iPad mini 8（A20 Pro、約 12GB RAM、256GB、iPadOS 27.0）
-- 狀態（2026-11-18）：✅ 安裝 ✅ JIT ✅ 遊戲下載 ✅ Battle.net 登入、進到角色列表 ⏳ 繁中介面
+- 狀態（2026-11-18）：✅ 安裝 ✅ JIT ✅ 遊戲下載 ✅ Battle.net 登入、進到角色列表 ✅ 繁中介面
 - 詳細過程和除錯紀錄：[CHANGELOG.md](CHANGELOG.md)
 - 文中 `<TEAM_ID>`、`<GITHUB_USER>` 等代號的實際值記在本機的 `PRIVATE.local.md`（不上 git）
 

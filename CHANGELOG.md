@@ -18,7 +18,7 @@
 - ✅ **Battle.net 登入成功**（約 20:00）：含根憑證的 IPA + `portal "KR"` + 手動輸入驗證器代碼
 - 🎯 目標達成：iPad 上可以操作登入 Battle.net，已進到角色列表
 - ✅ 自動重簽：見下方「自動重簽工具」
-- ⏳ 介面改繁中：已裝含 zhTW 選項的新版，iPad 上 zhTW 語言檔下載中（20:53 開始）
+- ✅ **繁中介面**（21:22 確認）：zhTW 語言檔下載完成，介面和語音都是中文
 
 ### 一鍵啟動捷徑（21:10，待測）
 - 需求：從主畫面點一下就開遊戲，不用每次進 StikDebug
@@ -44,7 +44,8 @@
 - `resign/apps.conf` 改用 zhtw 版 IPA
 - 20:53 iPad 上開始下載 zhTW（驗證總量約 51GB）；`wolkaraforever-config.json` 已是 `WoWLocale: zhTW`
 - **決定（20:58）：文字和語音都用中文**，`Config.wtf` 維持 `textLocale/audioLocale "zhTW"`，不改回英文語音
-- ⏳ 待確認：下載完成後按 Play，看介面是否為繁中
+- 21:17 zhTW 下載完成（`error=none`，沿用 47GB、實際讀取約 1.3GB 驗證）
+- ✅ 21:22 進遊戲確認介面是繁體中文
 
 ### 不透過電腦重簽的可能性（評估，20:10）
 | 方式 | 可行性 | 說明 |
