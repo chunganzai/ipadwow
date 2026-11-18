@@ -1,5 +1,7 @@
 # ipadwow — 在 iPad 上原生執行《魔獸世界：永恆》
 
+**繁體中文** | [English](README.en.md)
+
 用非官方專案 **WolkaraForever**（建立在 **Tolkara** 之上）在 iPad 上原生跑 WoW 永恆。
 **不需要 Mac，也不需要付費 Apple Developer 帳號**：用 Linux 電腦、免費 Apple ID，加上 GitHub 雲端編譯就能完成。
 
@@ -69,7 +71,7 @@
 4. iPad：設定 → 一般 → VPN 與裝置管理 → 信任自己的 Apple ID
 5. 檢查權限：`ideviceinstaller -l -o list_user -o xml`，Tolkara 要有 `com.apple.developer.kernel.increased-memory-limit = true`
 
-> 不需要 SideStore 或 GetMoreRam。SideStore 0.7.0 在這台 iPad 上無法登入（-45063、HTTP 401），已刪除。
+> 不需要 SideStore 或 GetMoreRam。SideStore 0.7.0 在這台 iPad 上無法登入（-45063、HTTP 401）；每夜建置版可以登入，但會要求撤銷 iloader 的簽名憑證，那會讓 iloader 裝的 App 失效，所以沒有採用（見 CHANGELOG）。
 
 ### 4. StikDebug 配對檔
 iloader 的「管理配對檔案 → 放入」沒有把檔案放進 StikDebug，所以改成手動：
