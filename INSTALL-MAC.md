@@ -1,5 +1,8 @@
 # 借到 Mac 後的完整安裝步驟（官方「開發者服務」路線）
 
+> 🗄 **備案文件**：現在用的是不需要 Mac 的免費路線，見 [README.md](README.md)。只有想改走官方「開發者服務」模式時才需要這份。
+
+
 整理日期：2026-11-17。依據 jklock/wolkaraforever 官方文件（docs 驗證版本 `3c33543`，2026-11-13）、
 `local.env.example`、本專案蒐集的已知問題。官方文件原文備份在 `reference/upstream/`。
 **動工當天先重看官方 INSTALLATION.md 和 Releases**：專案幾乎每天更新，指令可能改。

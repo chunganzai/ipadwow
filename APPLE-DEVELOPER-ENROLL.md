@@ -1,5 +1,8 @@
 # Apple Developer Program 申請步驟（台灣個人）
 
+> 🗄 **備案文件**：免費 Apple ID 已能取得 increased-memory-limit，不一定要付費。付費的好處是簽名一年有效、可用 Developer service 模式（不需要 StikDebug），見 [README.md](README.md)〈付費帳號能多什麼〉。
+
+
 整理日期：2026-11-17。依 Apple 官方說明頁整理，來源見文末。
 用途：讓 WolkaraForever 能取得 increased-memory-limit、tunnel 等權限，並把 App 簽名效期延長到一年。
 **申請不需要 Mac**，用 iPhone 或網頁就能辦，建議借到 Mac 之前先申請好。

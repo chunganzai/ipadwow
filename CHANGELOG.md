@@ -18,7 +18,14 @@
 - ✅ **Battle.net 登入成功**（約 20:00）：含根憑證的 IPA + `portal "KR"` + 手動輸入驗證器代碼
 - 🎯 目標達成：iPad 上可以操作登入 Battle.net，已進到角色列表
 - ✅ 自動重簽：見下方「自動重簽工具」
-- ⏳ 文字改繁中：已裝含 zhTW 選項的新版，等 iPad 上下載中文語言檔
+- ⏳ 介面改繁中：已裝含 zhTW 選項的新版，iPad 上 zhTW 語言檔下載中（20:53 開始）
+
+### 一鍵啟動捷徑（21:10，待測）
+- 需求：從主畫面點一下就開遊戲，不用每次進 StikDebug
+- 不需要 JIT 的方式不存在；Tolkara 自己開 JIT 的「Developer service」模式要 Network Extension 權限，只有付費帳號能用
+- 免費帳號做法：StikDebug 3.2.2 有捷徑動作 `EnableJITIntent`（Enable JIT，參數 App），也支援網址 `stikjit://enable-jit?bundle-id=…&script-name=…`
+- 捷徑檔要在 Mac 上簽名才能匯入，所以要在 iPad 上手動建立，步驟見 `SHORTCUT.md`
+- zhTW 下載 20:58 卡住（網路沒有回應），重開後 21:07 從剩下的 3.03GB 接著下載
 
 ### 重開遊戲閃退 → 語言被同步成 zhTW（20:11）
 - 現象：從 StikDebug 開、按 Play 後約 5 秒遊戲自己結束（`World of Warcraft Forever has closed`），JIT 和記憶體都正常，沒有當機紀錄
@@ -35,7 +42,9 @@
 - 雲端編譯一次成功 → `ipa/WolkaraForever-v1.0.17-zhtw-unsigned.ipa`（10,013,229 bytes）；GitHub release 下載後已刪除
 - 用 `resign/` 的 iloader 自動化覆蓋安裝，49GB 遊戲檔、portal KR 保留，到期 11/25 20:18
 - `resign/apps.conf` 改用 zhtw 版 IPA
-- ⏳ 待做：iPad 上 Tolkara 下載語言選 Traditional Chinese 並下載（會連中文語音一起下載）→ 關閉後把 `audioLocale` 改回 `enUS`、`textLocale` 維持 `zhTW`
+- 20:53 iPad 上開始下載 zhTW（驗證總量約 51GB）；`wolkaraforever-config.json` 已是 `WoWLocale: zhTW`
+- **決定（20:58）：文字和語音都用中文**，`Config.wtf` 維持 `textLocale/audioLocale "zhTW"`，不改回英文語音
+- ⏳ 待確認：下載完成後按 Play，看介面是否為繁中
 
 ### 不透過電腦重簽的可能性（評估，20:10）
 | 方式 | 可行性 | 說明 |

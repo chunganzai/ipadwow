@@ -1,5 +1,8 @@
 # iPad 執行步驟規劃：免費 Apple ID 加 External JIT（不用 Mac）
 
+> 📜 **原始規劃**（2026-11-17）。實際做法有些不同（沒用 SideStore、GetMoreRam），以 [README.md](README.md) 為準。
+
+
 整理日期：2026-11-17。對象：iPad mini 8（A20 Pro、約 12GB RAM、256GB、iPadOS 27）加這台 Linux 電腦。
 依據：
 - jklock/wolkaraforever issue #67：iPhone 16 Pro Max、iOS 27.0、免費 Apple ID，**2026-11-14 成功進入遊戲世界**。
