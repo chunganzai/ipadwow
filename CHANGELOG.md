@@ -158,27 +158,42 @@
 - `IPAD-FREE-ROUTE.md`：免費 Apple ID 路線規劃，開頭加上「實作紀錄」
 - `README.md`、`INSTALL-MAC.md`、`APPLE-DEVELOPER-ENROLL.md`：Mac 加付費帳號路線，目前用不到，當作備案
 
-### PlayPort 與現有方法比較（待測試）
+### PlayPort 與現有方法比較（2026-11-19 上網查證）
 
-| 項目 | 現有方法（Tolkara） | PlayPort |
+資料來源：[playportdev/playport](https://github.com/playportdev/playport)（README、`docs/DEVICE.md`）、[playport.dev](https://playport.dev/)、[v0.5.0 release](https://github.com/playportdev/playport/releases/tag/v0.5.0)、issue [#55](https://github.com/playportdev/playport/issues/55)、[#152](https://github.com/playportdev/playport/issues/152)
+
+> ❗ **最大差異：PlayPort 不支援 WoW 永恆（Forever）。** v0.5.0 的 Battle.net 商店只列出正式版（Retail）、Classic、Classic Era、Classic Anniversary，所有頁面都沒有提到 Forever。目前玩的是永恆，所以 PlayPort **無法取代** Tolkara，只能拿來玩其他版本。
+
+| 項目 | 現有方法（Tolkara） | PlayPort 0.5.0（2026-11-02） |
 |------|-------------------|---------|
-| 架構 | iOS 原生 WoW port | PC 遊戲模擬層（跑 Windows 版） |
-| WoW 支援 | 專為 WoW Forever 設計 | v0.5 新增，支援 Battle.net |
-| 目標裝置 | iPad mini 8 ✅ | 主要測試 A19 Pro iPhone，iPad 未明確說明 ⚠️ |
-| JIT 啟動 | 每次：LocalDevVPN → StikDebug → Enable JIT → 開遊戲 | iOS 27+ 只需一次性配對，之後直接開 ✅ |
-| 簽名工具 | iloader + resign/ 自動腳本 | AltStore Classic 2.2+（原生支援 increased-memory-limit） |
-| 7天重簽 | resign/ 自動化 | 仍需每週重簽 |
-| 台灣伺服器 | 需要 `portal "KR"` 繞過 | 未知，可能直接用 Battle.net 登入 ⚠️ |
-| 繁中介面 | 需 fork 修改編譯（v1.0.17-zhtw） | 跑 PC 版，語言設定應更自由 ✅ |
-| 遊戲資料 | 49GB 已在裝置上 | 重裝要重下 49GB ❌ |
+| 架構 | 原生載入 macOS arm64 版 WoW | Wine + FEX（x86→ARM 轉譯）+ Vulkan/DXMT，跑 **Windows 版** |
+| 支援的 WoW 版本 | ✅ **永恆（Forever）** | 正式版、Classic、Classic Era、Classic Anniversary；❌ **沒有永恆** |
+| 帳號需求 | 有永恆資格的帳號 | 正式版需要**有效訂閱**（遊戲登入時檢查） |
+| 地區 | 選單有 Taiwan，但實際要改 `portal "KR"` 才能登入 | 有地區選單：US / Europe / Korea / **Taiwan**（預設跟手機地區）。台灣帳號能不能直接登入：未知 |
+| 語言 | 要 fork 修改才有 zhTW（v1.0.17-zhtw） | 每個遊戲有語言選單，但官方沒列出有哪些語言；zhTW：未知 |
+| 測試裝置 | ✅ iPad mini 8 實測可用 | 官方**只在一支手機上測過**（A19 Pro iPhone，iPhone18,4，12GB RAM）；**iPad 完全沒提到**。issue #152：iPad Pro M4 用 SideStore 裝 v0.5.0，JIT 檢查通過但遊戲無法啟動（記憶體權限沒開） |
+| iPadOS 版本 | 27.0 ✅ | 已知可用：iOS 27.0；**27.2 不在已知可用清單**（StikDebug issue #471）。本機 iPadOS 27.0 ✅ |
+| JIT 啟動 | 每次：LocalDevVPN → StikDebug → Enable JIT → 點 Tolkara | iOS 27：在「設定 › 隱私權與安全性 › 開發者模式」用配對碼**配對一次**，之後由 PlayPort 內建 JIT 幫手處理，LocalDevVPN 要連著；**每次不用開 StikDebug** ✅。issue #55 有人在 iOS 27.0.1 配對一直存不起來（逾時） |
+| 簽名工具與記憶體權限 | iloader（自動加 increased-memory-limit）✅ | 官方表：AltStore Classic 2.2+ ✅、Impactor ✅、Xcode Personal Team ✅、SideStore 0.7.0 免費帳號 ❌（要配 GetMoreRam）。**iloader 不在表上**，但它會自動加權限，理論上可用 |
+| 7 天重簽 | `resign/` 自動化 | 免費帳號一樣 7 天，要每週重簽（`resign/` 可沿用） |
+| App 名額 | Tolkara 佔 1 個 | PlayPort 佔 1 個；內建 JIT 幫手不佔名額。和 StikDebug、Tolkara 一起用剛好 3/3 |
+| 遊戲容量 | 永恆約 49GB（中文約 51GB），已在 iPad 上 | 正式版約需 **132GB** 可用空間、Classic 約 80GB、Classic Era 約 5GB；Battle.net 遊戲只能下載，**不能匯入現有檔案** |
+| 效能 | 可用記憶體約 11.7GB | 官方測正式版：約 45 秒進登入畫面，野外 55–60 FPS；主城、團隊副本會更慢；發熱會降頻 |
+| 封號風險 | Blizzard 不支援，風險自負 | 同樣不被 Blizzard 支援，第一次 Play 前要同意風險；不修改遊戲檔或記憶體中的程式碼 |
+| 授權 | 上游授權見 repo | GPL-3.0-or-later |
 | 費用 | 免費 | 免費 |
 
-**測試重點：**
-- iPad mini 8 是否相容（PlayPort 主要測試 A19 Pro iPhone）
-- 台灣帳號能否直接登入（不用 `portal "KR"`）
-- 記憶體權限（increased-memory-limit）是否有效
+**決定（2026-11-19）：不支援永恆，先不用 PlayPort，繼續用 Tolkara。**
 
-**測試策略：** 先不刪 Tolkara，確認 PlayPort 在 iPad mini 8 上能正常登入 TW 帳號後再決定是否切換。
+**結論：**
+- 要玩**永恆**：繼續用 Tolkara，PlayPort 目前做不到
+- PlayPort 唯一明顯的優勢是 iOS 27 上**不用每次開 StikDebug**。Tolkara 這邊可以用 `SHORTCUT.md` 的一鍵捷徑來補
+- 如果之後想在 iPad 玩**正式版或 Classic**，可以試 PlayPort，但 iPad 不在官方測試範圍內，空間也要先清出來（正式版約 132GB）
+
+**如果要測（玩其他版本時）：**
+- 不要刪 Tolkara。PlayPort 會佔第 3 個 App 名額，SideStore 要先刪掉
+- 用 iloader 裝 PlayPort，裝完檢查 increased-memory-limit 有沒有在簽名裡
+- 測試重點：iPad mini 8 能不能配對、能不能啟動，地區選 Taiwan 能不能直接登入，有沒有 zhTW
 
 ### 實機照片（2026-11-19）
 - `photos/login-screen.jpg`：iPad mini 8 上的 WoW Forever 登入畫面
