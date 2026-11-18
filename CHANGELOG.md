@@ -15,7 +15,8 @@
 - ✅ 設定：Game Edition = Forever（`wowf`）、Region = **Taiwan（`tw`）**、Language = English（enUS）
 - ✅ 遊戲下載完成（16:18，iPad 上約 49GB，檢查 `error=none`）
 - ✅ 按 Play 後遊戲能啟動到登入畫面；可用記憶體約 **11.7GB**（遊戲顯示 11.5 GB System Memory），記憶體權限有生效
-- ⏳ Battle.net 登入：已改用含根憑證的 IPA、並把 portal 改成 `"KR"`，等待測試結果
+- ✅ **Battle.net 登入成功**（約 20:00）：含根憑證的 IPA + `portal "KR"` + 手動輸入驗證器代碼
+- 🎯 目標達成：iPad 上可以操作登入 Battle.net
 
 ### 下載完成後到登入（19:30–19:56）
 - **第一次 Play 失敗的原因：** 當時的 Tolkara 是從主畫面直接開的，log 裡沒有 `arena was reserved at launch`，等於沒有 JIT
@@ -32,6 +33,10 @@
   - 原因二：portal 設錯。iPad 的 `_forever_/WTF/Config.wtf` 是 `SET portal "TW"`，但電腦上（Lutris）能登入的 Forever 是 **`SET portal "KR"`**（台灣帳號走 KR 登入伺服器）
     - 修法：Tolkara 完全關閉後，用 ifuse 把那一行改成 `"KR"`，其他設定不動；原檔備份在 scratchpad
     - 上游文件說 beta 用 `portal "test"`，但以本帳號實際可用的值為準
+- **portal 改 KR 之後：** 帳號密碼驗證通過（`SRP … ERROR_OK`、`authenticatorRequired=true`）
+  - 第 1 次：等手機核准約 1 分鐘逾時 → `Fatal login error (325)`
+  - 第 2 次：輸入驗證碼被拒 → `(14400)`，推測代碼錯誤或過期
+  - **遊戲登入時手機不會跳出核准通知**，要自己打開 Battle.net 驗證器，把畫面上的代碼（Battle.net 驗證器通常 8 碼）在代碼快更新前輸入 → 成功
 - 下載語言只有 enUS，所以 iPad 維持 `textLocale/audioLocale "enUS"`（電腦上是 zhTW）
 
 ### 安裝方式（和原規劃不同）
