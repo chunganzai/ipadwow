@@ -20,7 +20,18 @@
 - ✅ 改用 **Remote Pairing** 後連線成功：`tunnel_create_rppairing succeeded`、`connection test SUCCEEDED`
 - Tolkara 和 StikDebug 的 IPA 已放到 SideStore 的 Documents（`Tolkara-zhtw.ipa`、`StikDebug-3.2.2.ipa`），撤銷憑證後可以直接從 SideStore 安裝
 - 定期重簽：不用 SideStore 的到期通知（使用者決定），確認可行後改用捷徑自動化定期執行 SideStore 的 **Refresh All Apps** 動作（原始碼 `RefreshAllAppsIntent`）
-- 還沒測：實際簽名和安裝。要等使用者確認後，才撤銷 iloader 的憑證
+
+### SideStore 接手完成（11:40–11:45）
+- 電腦上的自動重簽停用：`systemctl --user disable --now ipad-resign.timer`。**之後不要再用 iloader 簽這台 iPad**，否則會撤銷 SideStore 的憑證
+- SideStore → Settings 的 **Action Required**（Active signing certificate pending）→ 點下去 → **Revoke and Resign Now** → 擴充功能選 **Remove App Extensions** → SideStore 用新憑證重裝自己後自動關閉，重開後警示消失
+  - 移除擴充功能的原因：免費帳號的上限是 3 個 App 加上擴充功能；捷徑用的 Refresh All Apps 在主程式裡，不受影響
+- 在 SideStore 的 My Apps 按 ＋，安裝 `StikDebug-3.2.2.ipa` 和 `Tolkara-zhtw.ipa`
+- 驗證結果：
+  - 到期日：StikDebug、Tolkara 都是 11/26 11:42，由 SideStore 簽名
+  - Tolkara 的 `increased-memory-limit`、`get-task-allow` 都在
+  - 遊戲資料 53GB 保留，`portal "KR"`、`textLocale/audioLocale "zhTW"` 沒變
+  - StikDebug 的 `pairingFile.plist`、scripts 都在
+- 待測：從 StikDebug 開遊戲（目前遊戲正在更新）、SideStore 的 Refresh All、捷徑自動化
 
 ---
 
