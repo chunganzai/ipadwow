@@ -141,7 +141,7 @@ iloader 的「管理配對檔案 → 放入」沒有把檔案放進 StikDebug，
 ## 每 7 天重簽（SideStore，不用電腦）
 
 - 手動：LocalDevVPN 連線 → SideStore → **My Apps** → 右上角 **Refresh All**。到期日會延長成 7 天後
-- 自動：捷徑 App → **自動化** → **＋** → **特定時間**（每週 2～3 次、立即執行），動作依序是（⏳ 待實測）：
+- 自動：捷徑 App → **自動化** → **＋** → **特定時間**（每週 2～3 次、立即執行），動作依序是（✅ 2026-11-19 實測成功）：
   1. **設定 VPN** → LocalDevVPN → 連線（清單裡沒有的話改用「打開 App」→ LocalDevVPN）
   2. **等待** 3 秒
   3. SideStore 的 **Refresh All Apps**

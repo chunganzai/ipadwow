@@ -39,6 +39,7 @@
   3. SideStore「Refresh All Apps」
   - Refresh 可能需要 SideStore 在前景，iPad 鎖定時可能跑不完，所以排在常用 iPad 的時段
   - 萬一過期：打開 SideStore 手動按 Refresh All 就能恢復
+- ✅ 捷徑自動化設定完成，手動執行一次成功：到期日更新成 11/26 11:56
 
 ---
 

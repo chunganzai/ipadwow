@@ -151,7 +151,7 @@ To confirm that JIT worked, look for `an arena was reserved at launch` in `wolka
 ## Re-signing every 7 days (SideStore, no computer)
 
 - Manually: connect LocalDevVPN → SideStore → **My Apps** → **Refresh All** (top right). Expiry moves to 7 days from now.
-- Automatically: Shortcuts → **Automation** → **＋** → **Time of Day** (2–3 times a week, Run Immediately) with these actions (⏳ not yet tested):
+- Automatically: Shortcuts → **Automation** → **＋** → **Time of Day** (2–3 times a week, Run Immediately) with these actions (✅ tested 2026-11-19):
   1. **Set VPN** → LocalDevVPN → Connect. If LocalDevVPN isn't listed, use **Open App** → LocalDevVPN instead.
   2. **Wait** 3 seconds.
   3. SideStore's **Refresh All Apps**.
