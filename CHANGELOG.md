@@ -31,7 +31,14 @@
   - Tolkara 的 `increased-memory-limit`、`get-task-allow` 都在
   - 遊戲資料 53GB 保留，`portal "KR"`、`textLocale/audioLocale "zhTW"` 沒變
   - StikDebug 的 `pairingFile.plist`、scripts 都在
-- 待測：從 StikDebug 開遊戲（目前遊戲正在更新）、SideStore 的 Refresh All、捷徑自動化
+- ✅ 遊戲更新完成後，從 StikDebug 開遊戲可以進入
+- ✅ SideStore → My Apps → **Refresh All** 成功：到期日從 11/26 11:42 更新成 11:54，**不用接電腦**
+- 定期重簽改用捷徑自動化（特定時間，每週 2～3 次，立即執行）：
+  1. 設定 VPN → LocalDevVPN → 連線（清單裡沒有的話改用「打開 App」→ LocalDevVPN）
+  2. 等待 3 秒
+  3. SideStore「Refresh All Apps」
+  - Refresh 可能需要 SideStore 在前景，iPad 鎖定時可能跑不完，所以排在常用 iPad 的時段
+  - 萬一過期：打開 SideStore 手動按 Refresh All 就能恢復
 
 ---
 
