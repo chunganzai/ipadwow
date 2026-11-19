@@ -4,9 +4,10 @@
 
 This repo runs WoW Forever natively on an iPad with the unofficial **WolkaraForever** project, which is built on **Tolkara**.
 **You don't need a Mac or a paid Apple Developer account.** A Linux PC, a free Apple ID and a GitHub Actions cloud build are enough.
+After the first install, **SideStore** re-signs the apps on the iPad every 7 days, so **you no longer need the computer**.
 
 - Test device: iPad mini 8 (A20 Pro, ~12 GB RAM, 256 GB, iPadOS 27.0)
-- Status (2026-11-18): ✅ installed ✅ JIT ✅ game downloaded ✅ Battle.net login, character list reached ✅ Traditional Chinese UI
+- Status (2026-11-19): ✅ installed ✅ JIT ✅ game downloaded ✅ Battle.net login, character list reached ✅ Traditional Chinese UI ✅ on-device re-signing (SideStore, 2026-11-19)
 - Detailed log and troubleshooting history: [CHANGELOG.md](CHANGELOG.md) (Traditional Chinese)
 - `<TEAM_ID>`, `<GITHUB_USER>`, `<IPAD_APPLE_ID>` and similar are placeholders. Replace them with your own values.
 - These are personal notes, not official WolkaraForever documentation. This repo does not distribute any IPA.
@@ -34,19 +35,19 @@ Left: the login screen. Right: in game at Gadgetzan, Tanaris. The character name
 | **WolkaraForever** (app name: Tolkara) | Loads the unmodified macOS arm64 WoW client on iPad. It downloads, verifies and updates the game from Blizzard's CDN by itself | Your own fork, built into an IPA with GitHub Actions |
 | **StikDebug** | Enables JIT (executable memory) for Tolkara. You need it every time you launch the game | Official IPA |
 | **LocalDevVPN** | An on-device tunnel that lets StikDebug reach the iPad's own developer service. It does not route normal internet traffic | App Store |
-| **iloader** (on the Linux PC) | Signs and installs IPAs with a free Apple ID. **It adds `increased-memory-limit` automatically**, so the app gets enough memory | [nab138/iloader](https://github.com/nab138/iloader) (v2.4.1) |
-| `resign/` | Checks signing expiry every hour and re-signs with iloader before it expires | This repo |
+| **SideStore** (nightly) | Re-signs all apps on the iPad with the free Apple ID, **no computer needed**. Can be automated with Shortcuts | Installed with iloader |
+| **iloader** (on the Linux PC) | **First install only.** Signs and installs IPAs. **It turns on `increased-memory-limit` on the App ID automatically**, so the app gets enough memory | [nab138/iloader](https://github.com/nab138/iloader) (v2.4.1) |
 
 Free account limits:
 - Signatures expire after **7 days**
-- At most **3** sideloaded apps at once (StikDebug and Tolkara use 2)
+- At most **3** sideloaded apps and app extensions at once (SideStore, StikDebug and Tolkara use all 3)
 - At most 10 new App IDs per 7 days
 
 ---
 
 ## Requirements
 
-- A Linux PC with `iloader`, `libimobiledevice`, `ifuse` and `gh`
+- A Linux PC with `iloader`, `libimobiledevice`, `ifuse` and `gh` (needed only for the first install and for editing config files)
 - A USB-C cable
 - An Apple-silicon iPad, ideally on iPadOS 27, with **≥ 70 GB free**. The game is ~49 GB, ~51 GB+ with the Chinese language pack, plus space for update staging
 - A free Apple ID (a separate one just for sideloading is recommended)
@@ -86,12 +87,11 @@ Tags used on the fork:
 1. Open iloader, sign in with the iPad's Apple ID, and choose **Jkcoxson** as the Anisette server.
 2. Use **Import IPA** to install **StikDebug** (`ipa/StikDebug-3.2.2.ipa`).
 3. Use **Import IPA** to install **WolkaraForever** (`ipa/WolkaraForever-v1.0.17-zhtw-unsigned.ipa`).
-4. On the iPad, trust your Apple ID in Settings → General → VPN & Device Management.
-5. Check the entitlements with `ideviceinstaller -l -o list_user -o xml`. Tolkara must have `com.apple.developer.kernel.increased-memory-limit = true`.
+4. Install **SideStore (nightly)**. The 0.7.0 release could not sign in on this iPad (-45063, HTTP 401).
+5. On the iPad, trust your Apple ID in Settings → General → VPN & Device Management.
+6. Check the entitlements with `ideviceinstaller -l -o list_user -o xml`. Tolkara must have `com.apple.developer.kernel.increased-memory-limit = true`.
 
-> SideStore and GetMoreRam are not needed.
-> - SideStore 0.7.0 could not sign in on this iPad (-45063, HTTP 401).
-> - The SideStore nightly can sign in, but it wants to revoke iloader's signing certificate. That would break the apps iloader installed, so it is not used (see CHANGELOG).
+> **Why install Tolkara with iloader first instead of SideStore?** iloader turns on increased-memory-limit on Tolkara's App ID. SideStore doesn't turn it on by itself for a free account (SideStore issue #1616), but it keeps a capability that is already on. So iloader installs first and SideStore takes over afterwards. GetMoreRam is not needed.
 
 ### 4. StikDebug pairing file
 iloader's "Manage pairing files → Place" did not put the file into StikDebug, so copy it manually:
@@ -100,7 +100,22 @@ iloader's "Manage pairing files → Place" did not put the file into StikDebug, 
 3. Copy the file in as `pairingFile.plist`, then unmount.
 4. Open StikDebug and make sure it shows no error.
 
-### 5. First launch and game download
+### 5. Hand over to SideStore
+After this, SideStore does the re-signing. **Don't sign this iPad with iloader again.** A free account can have only one development certificate, so the two tools would revoke each other's.
+1. Put the IPAs into SideStore's Documents: `ifuse --documents com.SideStore.SideStore.<TEAM_ID> <mountpoint>`, copy the StikDebug and WolkaraForever IPAs in, then unmount.
+2. **Use Remote Pairing.** iloader already put `PairingFile_Lockdown.plist` and `PairingFile_RemoteRP.plist` in SideStore's Documents, but SideStore has no preferred protocol set, so it loads neither at launch.
+   - SideStore → Settings → Advanced Settings → **Pairing File Management** → **long-press** the title of the Remote Pairing card → **Set as Preferred**. A plain tap only opens the file view.
+   - **Don't use Lockdown.** On iOS 26.4+ it needs an IPSec tunnel, which LocalDevVPN doesn't provide (log: `no ipsec interface`).
+   - Relaunch SideStore with LocalDevVPN connected.
+3. Sign in with the Apple ID. Settings shows **Action Required** (Active signing certificate pending). Tap it → **Revoke and Resign Now**.
+   - This revokes iloader's certificate, so StikDebug and Tolkara stop opening until step 6.
+4. For app extensions, choose **Remove App Extensions**. Extensions count toward the 3-app limit. The Refresh All Apps action used by Shortcuts is in the main app, so it isn't affected.
+5. SideStore reinstalls itself with the new certificate and closes. Wait for the icon to finish installing, then reopen it.
+6. **My Apps** → **＋** (top left) → pick the StikDebug IPA, then **＋** again → pick the WolkaraForever IPA. The bundle IDs don't change, so these install over the existing apps and keep the game files and pairing file.
+7. Check Tolkara's increased-memory-limit again.
+8. If the `resign/` timer is enabled on the PC, stop it: `systemctl --user disable --now ipad-resign.timer`.
+
+### 6. First launch and game download
 1. Connect LocalDevVPN, then in StikDebug:
    1. Tap **Enable JIT**
    2. Long-press Tolkara → **Assign Script** → `universal.js`
@@ -108,14 +123,14 @@ iloader's "Manage pairing files → Place" did not put the file into StikDebug, 
 2. In Tolkara choose Game Edition **Forever**, Region **Taiwan** and Language **Traditional Chinese** (or English).
 3. Tap **Install** and let it download ~49 GB or more. Keep the iPad unlocked with Tolkara in the foreground. When it finishes, the button changes to **Play**.
 
-### 6. Change the login portal (required for Taiwan accounts)
+### 7. Change the login portal (required for Taiwan accounts)
 Taiwan accounts log in through the **KR** portal. The app's default `TW` fails with BLZ51901016.
 1. **Fully close Tolkara** by swiping it away in the app switcher.
 2. Mount it with `ifuse --documents local.tolkara.app.<TEAM_ID> <mountpoint>`.
 3. In `World of Warcraft/_forever_/WTF/Config.wtf`, change `SET portal "TW"` to `SET portal "KR"` and leave everything else as it is.
 4. Unmount.
 
-### 7. Log in
+### 8. Log in
 - Launch Tolkara from StikDebug, tap **Play**, and enter your Battle.net credentials.
 - **No approval notification appears on your phone.** Open the Battle.net Authenticator yourself and enter the code it shows (usually 8 digits) before it changes.
 
@@ -133,17 +148,19 @@ To confirm that JIT worked, look for `an arena was reserved at launch` in `wolka
 
 ---
 
-## Re-signing every 7 days
+## Re-signing every 7 days (SideStore, no computer)
 
-- `resign/` runs every hour as the systemd user timer `ipad-resign.timer`.
-  - If a signature expires within 2 days and the iPad is connected, it drives the iloader window to re-sign.
-  - If the iPad isn't connected, it shows a desktop notification instead.
-- Re-signing installs over the existing app, so game files, the pairing file and `Config.wtf` are kept.
-  - **The bundle ID must stay the same.**
-  - **Never delete the app**, or the game data will be lost.
-- It needs an unlocked desktop session and iloader signed in.
-- Commands: `resign/resign.py --status` and `resign/resign.py --force`. See [resign/README.md](resign/README.md).
-- When you switch to a new IPA, update the path in `resign/apps.conf`.
+- Manually: connect LocalDevVPN → SideStore → **My Apps** → **Refresh All** (top right). Expiry moves to 7 days from now.
+- Automatically: Shortcuts → **Automation** → **＋** → **Time of Day** (2–3 times a week, Run Immediately) with these actions (⏳ not yet tested):
+  1. **Set VPN** → LocalDevVPN → Connect. If LocalDevVPN isn't listed, use **Open App** → LocalDevVPN instead.
+  2. **Wait** 3 seconds.
+  3. SideStore's **Refresh All Apps**.
+  - Refreshing may need SideStore in the foreground and may not finish while the iPad is locked, so pick a time when you usually use the iPad.
+- If the apps have already expired: open LocalDevVPN and SideStore and tap Refresh All.
+- Re-signing installs over the existing apps, so game files, the pairing file and `Config.wtf` are kept. **Never delete the app**, or the game data will be lost.
+- New IPA version: put it in SideStore's Documents and install it with ＋ in My Apps (same bundle ID).
+
+> Old method: `resign/` drove iloader on the PC to re-sign, which meant connecting the iPad every 7 days. It is disabled now and kept only as a fallback. Re-signing with iloader revokes SideStore's certificate, so you would have to redo "Hand over to SideStore" afterwards.
 
 ---
 
@@ -157,7 +174,11 @@ To confirm that JIT worked, look for `an arena was reserved at launch` in `wolka
 | Login `(14400)` | Wrong or expired authenticator code | Enter the code before it changes |
 | After the first login, the game quits ~5 s after launch | Account sync changed the `Config.wtf` locale to `zhTW`, but the zhTW data wasn't downloaded | Download zhTW in Tolkara, or set `textLocale`/`audioLocale` back to a downloaded locale |
 | Download progress freezes with no error | The network stopped responding and the app kept waiting | Fully close Tolkara and relaunch from StikDebug. Downloaded data is kept |
-| SideStore sign-in fails (-45063, HTTP 401) | SideStore 0.7.0 issue | Use iloader on the PC instead |
+| SideStore sign-in fails (-45063, HTTP 401) | SideStore 0.7.0 issue | Install the **nightly** with iloader |
+| SideStore never connects; log shows `pairing file not loaded` | No preferred protocol set | Pairing File Management → long-press Remote Pairing → Set as Preferred |
+| SideStore log shows `no ipsec interface (required for lockdown on iOS 26.4+)` | Lockdown is selected | Use Remote Pairing |
+| Importing a pairing file fails with `The pairing file format is ambiguous` | The file has both Lockdown and RP fields | Skip the import and set the preferred protocol by long-pressing, or split the file so it has only one kind of field |
+| StikDebug and Tolkara suddenly won't open | Signatures expired, or iloader signed something and revoked SideStore's certificate | Tap Refresh All in SideStore. If the certificate was revoked, redo "Hand over to SideStore" |
 
 ---
 
@@ -169,7 +190,7 @@ ifuse --documents local.tolkara.app.<TEAM_ID> <mountpoint>  # read/write Tolkara
 fusermount -u <mountpoint>
 ideviceinstaller -l -o list_user -o xml                     # apps and entitlements
 ideviceinfo -q com.apple.disk_usage                         # free space on the iPad
-~/ipadwow/resign/resign.py --status                         # signing expiry
+~/ipadwow/resign/resign.py --status                         # signing expiry (read-only)
 ```
 
 Useful files in Tolkara's Documents:
@@ -197,7 +218,7 @@ Related (Chinese): [APPLE-DEVELOPER-ENROLL.md](APPLE-DEVELOPER-ENROLL.md), [INST
 |------|----------|
 | [CHANGELOG.md](CHANGELOG.md) | Progress, current state, troubleshooting log |
 | [SHORTCUT.md](SHORTCUT.md) | One-tap Home Screen shortcut |
-| [resign/README.md](resign/README.md) | Auto re-sign tool |
+| [resign/README.md](resign/README.md) | Old PC-side auto re-sign tool (disabled, fallback) |
 | [IPAD-FREE-ROUTE.md](IPAD-FREE-ROUTE.md) | Original plan for the free route (2026-11-17) |
 | [RESEARCH.md](RESEARCH.md) | Early research; its "Mac required" conclusion is outdated |
 | [INSTALL-MAC.md](INSTALL-MAC.md), [APPLE-DEVELOPER-ENROLL.md](APPLE-DEVELOPER-ENROLL.md) | Paid account and Mac route (backup) |
@@ -209,3 +230,4 @@ Related (Chinese): [APPLE-DEVELOPER-ENROLL.md](APPLE-DEVELOPER-ENROLL.md), [INST
 - Tolkara: https://github.com/tolkara/tolkara
 - StikDebug: https://github.com/StikDebug/StikDebug
 - iloader: https://github.com/nab138/iloader
+- SideStore: https://github.com/SideStore/SideStore
