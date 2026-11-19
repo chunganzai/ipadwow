@@ -3,3 +3,4 @@ ipa/
 PRIVATE.local.md
 *.local.md
 __pycache__/
+private-backup/

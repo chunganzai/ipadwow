@@ -6,6 +6,24 @@
 
 ---
 
+## 2026-11-19
+
+### SideStore 接手重簽：連線測試（尚未撤銷憑證）
+- 目標：讓 iPad 自己每 7 天重簽，不用接電腦。免費帳號的簽名仍然 7 天到期，這點無法改變
+- 查 SideStore 原始碼（develop，2026-11-06）確認：
+  - 安裝未簽 IPA 時 bundle ID 會變成 `<原 ID>.<TEAM_ID>`，和 iloader 一樣 → 覆蓋安裝 Tolkara 會保留 49GB 遊戲檔
+  - App ID 上的 increased-memory-limit 已由 iloader 開啟，SideStore 只新增、不會關掉功能 → 應該會保留（撤銷後要實測）
+- **配對檔沒載入的原因**：`PairingFile_Lockdown.plist`、`PairingFile_RemoteRP.plist` 都在，但 SideStore 沒有設定「偏好協定」，啟動時兩個都不載入（log：`pairing file not loaded`）
+  - 兩個檔原本都同時含 Lockdown 和 RP 欄位，手動匯入時會出現 ambiguous 錯誤。已拆成各自只含一種欄位（原檔備份在本機 `private-backup/`，不上 git）
+  - 設定方式：Settings → Advanced Settings → Pairing File Management → **長按**卡片標題 → Set as Preferred（點一下只會進入檔案內容頁）
+- **Lockdown 在 iPadOS 27 不能用**：`no ipsec interface (required for lockdown on iOS 26.4+)`，LocalDevVPN 只提供 utun
+- ✅ 改用 **Remote Pairing** 後連線成功：`tunnel_create_rppairing succeeded`、`connection test SUCCEEDED`
+- Tolkara 和 StikDebug 的 IPA 已放到 SideStore 的 Documents（`Tolkara-zhtw.ipa`、`StikDebug-3.2.2.ipa`），撤銷憑證後可以直接從 SideStore 安裝
+- 定期重簽：不用 SideStore 的到期通知（使用者決定），確認可行後改用捷徑自動化定期執行 SideStore 的 **Refresh All Apps** 動作（原始碼 `RefreshAllAppsIntent`）
+- 還沒測：實際簽名和安裝。要等使用者確認後，才撤銷 iloader 的憑證
+
+---
+
 ## 2026-11-18
 
 ### 目前狀態
