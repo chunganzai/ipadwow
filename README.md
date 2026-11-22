@@ -168,6 +168,7 @@ iloader 的「管理配對檔案 → 放入」沒有把檔案放進 StikDebug，
 | SideStore 一直沒連上，log 有 `pairing file not loaded` | 沒有設定偏好協定 | Pairing File Management → 長按 Remote Pairing → Set as Preferred |
 | SideStore log 有 `no ipsec interface (required for lockdown on iOS 26.4+)` | 用了 Lockdown | 改用 Remote Pairing |
 | 匯入配對檔時出現 `The pairing file format is ambiguous` | 檔案同時含 Lockdown 和 RP 欄位 | 不用匯入，直接用長按設定偏好協定；或把檔案拆成只含其中一種欄位 |
+| SideStore 刷新失敗 `Your session has expired (code: 1100)`；重新登入出現 HTTP 503 | Apple 從 2026-11-20 起拒絕 `macOS;` 的登入資訊（[SideStore#1745](https://github.com/SideStore/SideStore/issues/1745)） | 關 On-Device Anisette → 伺服器選 `mac-ani.jkcoxson.com` → Anisette Client Configuration 按 Fetch、Save as Overrides → Client Info 改成 `<MacBookPro13,3> <Mac OS X;26.6;25F84> <com.apple.AuthKit/1 (com.apple.akd/1.0)>` → Save Overrides → 重開登入。**不要按 Reset to Defaults**（詳見 CHANGELOG 2026-11-22） |
 | StikDebug、Tolkara 突然全部打不開 | 簽名過期，或有人用 iloader 簽過而撤銷了 SideStore 的憑證 | 在 SideStore 按 Refresh All；憑證被撤銷時重做「交給 SideStore 接手」 |
 
 ---

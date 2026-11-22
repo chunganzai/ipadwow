@@ -6,6 +6,27 @@
 
 ---
 
+## 2026-11-22
+
+### SideStore 刷新失敗：Apple 登入 session 過期，重新登入 503（07:54–08:10，已修好）
+
+- **症狀：** 從 11/21 08:21 起，SideStore 每次刷新都失敗（捷徑自動跑的也是），錯誤為 `Your session has expired. Please log in. (code: 1100)`。App 本身沒到期（原到期日 11/26 11:41），所以遊戲照常能玩。
+- **原因：** 從 2026-11-20 起，Apple 會拒絕 `X-MMe-Client-Info` 裡含有 `macOS;` 的登入請求。SideStore 因此沒辦法自動續 session，登出後重新登入會得到 HTTP 503（[SideStore#1745](https://github.com/SideStore/SideStore/issues/1745)、[#1646](https://github.com/SideStore/SideStore/issues/1646)）。
+- **修法（SideStore Settings）：**
+  1. User Customizations → 關掉 **On-Device Anisette** → 重開 SideStore。
+  2. Anisette Servers → 選 `https://mac-ani.jkcoxson.com`。
+  3. User Customizations → **Anisette Client Configuration** → 最底下的 REMOTE SERVER SYNC → 按 **Fetch** → 按 **Save as Overrides**。
+  4. 最上面的 **Client Info**：把 `10.12.6;16G29` 改成 `26.6;25F84`（`macOS;` 也要改成 `Mac OS X;`），結果應為 `<MacBookPro13,3> <Mac OS X;26.6;25F84> <com.apple.AuthKit/1 (com.apple.akd/1.0)>`。User Agent 不動。按 **Save Overrides**。
+  5. 強制關閉 SideStore，重開後登入，輸入雙重驗證碼。
+  - **不要按 Reset to Defaults**，按了會變回 `macOS;`，又會被擋成 503。
+  - 登入失敗時不要一直重試。
+- **結果：**
+  - 08:09 登入成功，SideStore 沿用原本的簽章憑證，沒有撤銷、也沒有重裝。
+  - 08:10 Refresh All 成功，StikDebug、Tolkara、SideStore 三個 App 的到期日都延到 **11/29 08:10**。
+- **注意：** 捷徑自動刷新失敗時不會通知（SideStore 通知已關閉）。以後如果發現到期日沒有往後延，先看 SideStore 的 ConsoleLogs 有沒有 code 1100。
+
+---
+
 ## 2026-11-19
 
 ### SideStore 接手重簽：連線測試（尚未撤銷憑證）

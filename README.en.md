@@ -178,6 +178,7 @@ To confirm that JIT worked, look for `an arena was reserved at launch` in `wolka
 | SideStore never connects; log shows `pairing file not loaded` | No preferred protocol set | Pairing File Management → long-press Remote Pairing → Set as Preferred |
 | SideStore log shows `no ipsec interface (required for lockdown on iOS 26.4+)` | Lockdown is selected | Use Remote Pairing |
 | Importing a pairing file fails with `The pairing file format is ambiguous` | The file has both Lockdown and RP fields | Skip the import and set the preferred protocol by long-pressing, or split the file so it has only one kind of field |
+| SideStore refresh fails with `Your session has expired (code: 1100)`, and signing in again gives HTTP 503 | Since 2026-11-20 Apple rejects sign-in headers containing `macOS;` ([SideStore#1745](https://github.com/SideStore/SideStore/issues/1745)) | Turn off On-Device Anisette → pick `mac-ani.jkcoxson.com` as the server → in Anisette Client Configuration tap Fetch, then Save as Overrides → set Client Info to `<MacBookPro13,3> <Mac OS X;26.6;25F84> <com.apple.AuthKit/1 (com.apple.akd/1.0)>` → Save Overrides → restart and sign in. **Don't tap Reset to Defaults** (see CHANGELOG 2026-11-22) |
 | StikDebug and Tolkara suddenly won't open | Signatures expired, or iloader signed something and revoked SideStore's certificate | Tap Refresh All in SideStore. If the certificate was revoked, redo "Hand over to SideStore" |
 
 ---
